@@ -1,16 +1,28 @@
 package com.binbard.auth200.controllers;
 
-import com.binbard.auth200.models.Admin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.binbard.auth200.models.AdminDTO;
+import com.binbard.auth200.services.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminContoller {
+    private final AdminService adminService;
 
-    @GetMapping
-    public String createNewAdmin(Admin admin){
-        return "Created new Admin";
+    public AdminContoller(AdminService adminService){
+        this.adminService = adminService;
+    }
+
+    @GetMapping("/all")
+    public List<AdminDTO> listAllAdmins(){
+        return adminService.getAllAdmins();
+    }
+
+    @PostMapping(path = "/signup")
+    public void createNewAdmin(@RequestBody AdminDTO admin) {
+        adminService.createAdmin(admin);
     }
 }
